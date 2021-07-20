@@ -1,0 +1,37 @@
+version: '3'
+
+networks:
+  blog-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+
+services:
+  blog:
+    container_name: blog
+    build: .
+    ports:
+      - 8090:80
+      - 445:443
+      - 9005:9000
+    volumes:
+      - ./:/app
+    networks:
+      blog-net:
+        ipv4_address: 10.5.0.2
+
+  db_users:
+    container_name: db_users
+    image: postgres:latest
+    ports:
+      - 15432:5432
+    env_file:
+      - ./.env
+    environment:
+      POSTGRES_DB: ${USERS_POSTGRES_DB}
+      POSTGRES_USER: ${USERS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${USERS_POSTGRES_PASSWORD}
+    networks:
+      blog-net:
+        ipv4_address: 10.5.0.3
