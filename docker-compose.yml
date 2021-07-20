@@ -12,7 +12,7 @@ services:
     container_name: blog
     build: .
     ports:
-      - 8090:80
+      - 8091:80
       - 445:443
       - 9005:9000
     volumes:
@@ -25,7 +25,7 @@ services:
     container_name: db_users
     image: postgres:latest
     ports:
-      - 15432:5432
+      - 15433:5432
     env_file:
       - ./.env
     environment:
